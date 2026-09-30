@@ -128,21 +128,31 @@ body::before{content:""; position:fixed; inset:0; z-index:0; pointer-events:none
 <div class="toast" id="toast"></div>
 
 <script>
-/* ====== ALAMAT API (Apps Script) ====== */
-var API = "https://script.google.com/macros/s/AKfycbzAJdgmCINn3aYKYY31yeToSmKnaqH-q4XQf9xe8kZc5g3lF7iwc9ZUmmIDdTi-WpyIeA/exec";
-var KUNCI_KELUARGA = "rumah123";
+/* ====== ALAMAT API (proxy Cloudflare, satu domain — tanpa CORS) ====== */
+var API = "/api";
+var KUNCI_KELUARGA = "161010";
 
 /* ====== status ====== */
 var DB={kategori:[],master:[],pengguna:[]}, keranjang={}, namaSaya='', kategoriAktif='', tabKeluarga='belanja';
 var MODE='art', _permintaanCache=[];
 
-/* ====== panggil API ====== */
-function apiGet(action){
-  return fetch(API + '?action=' + encodeURIComponent(action)).then(function(r){return r.json();});
+/* ====== panggil API lewat proxy Cloudflare (fetch biasa, satu domain) ====== */
+function panggil(params){
+  var qs = [];
+  for (var k in params){ if(params[k]!==undefined && params[k]!==null) qs.push(encodeURIComponent(k)+'='+encodeURIComponent(params[k])); }
+  return fetch(API + '?' + qs.join('&'), { method:'GET', cache:'no-store' })
+    .then(function(r){ return r.json(); })
+    .catch(function(){ throw new Error('Gagal menghubungi server'); });
 }
+function apiGet(action){ return panggil({ action: action }); }
 function apiPost(obj){
-  return fetch(API, { method:'POST', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(obj) })
-    .then(function(r){return r.json();});
+  var params = { action: obj.action };
+  for (var k in obj){
+    if (k === 'action') continue;
+    if (k === 'daftar') params.payload = JSON.stringify({ daftar: obj.daftar });
+    else params[k] = obj[k];
+  }
+  return panggil(params);
 }
 
 /* ====== mulai ====== */
@@ -343,7 +353,7 @@ function modal(judul,fields,onSave){
   var ov=document.createElement('div'); ov.className='overlay show';
   var h='<div class="sheet"><h3>'+esc(judul)+'</h3>';
   fields.forEach(function(f){ h+='<div class="fld"><label>'+esc(f.label)+'</label>'
-    +(f.area?'<textarea id="f_'+f.key+'" rows="2">'+esc(f.val||'')+'</textarea>':'<input id="f_'+f.key+'" '+(f.num?'type="number" inputmode="numeric"':'type="text"')+' value="'+esc(f.val||'')+'">')+'</div>'; });
+    +(f.area?'<textarea id="f_'+f.key+'" rows="2">'+esc(f.val||'')+'</textarea>':'<input id="f_'+f.key+'" '+(f.num?'type="tel" inputmode="numeric" pattern="[0-9]*"':'type="text"')+' value="'+esc(f.val||'')+'">')+'</div>'; });
   h+='<div style="display:flex;gap:10px;margin-top:8px"><div class="btn2" style="flex:1" id="mBatal">Batal</div><div class="cta" style="flex:1;margin:0" id="mSimpan">Simpan</div></div></div>';
   ov.innerHTML=h; document.body.appendChild(ov);
   ov.querySelector('#mBatal').onclick=function(){ document.body.removeChild(ov); };
