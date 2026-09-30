@@ -3,8 +3,8 @@
      lalu diperbarui diam-diam di belakang (update terpakai saat dibuka berikutnya).
    - /api (data) TIDAK pernah lewat cache. */
 
-var CACHE = 'belanja-rumah-v5';
-var ASET = ['./', './index.html', './manifest.json', './icon-192.png', './icon-512.png', './icon-180.png'];
+var CACHE = 'belanja-rumah-v6';
+var ASET = ['./', './index.html', './manifest.json', './manifest-keluarga.json', './icon-192.png', './icon-512.png', './icon-180.png'];
 
 self.addEventListener('install', function(e){
   self.skipWaiting();
