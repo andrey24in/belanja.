@@ -5,12 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover, user-scalable=no">
 <title>Belanja Rumah</title>
 <meta name="theme-color" content="#3FB98A">
-<link rel="manifest" href="manifest.json">
+<script>
+/* Dua aplikasi terpisah dari satu file: link keluarga memakai manifest keluarga */
+(function(){ var q=new URLSearchParams(location.search), kel=(q.get('mode')==='keluarga'&&q.get('k')==='161010');
+  document.write('<link rel="manifest" href="'+(kel?'manifest-keluarga.json':'manifest.json')+'">'
+   +'<meta name="apple-mobile-web-app-title" content="'+(kel?'Belanja Keluarga':'Belanja Rumah')+'">');
+  if(kel) document.title='Belanja Keluarga'; })();
+</script>
 <link rel="apple-touch-icon" href="icon-180.png">
 <link rel="preconnect" href="https://lh3.googleusercontent.com">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Belanja Rumah">
 <style>
 :root{--mint:#3FB98A;--mint-d:#0C5B44;--txt:#22251F;--txt2:#6E7278;--txt3:#9a958a;--line:rgba(255,255,255,.7);--danger:#A32D2D;--warn:#8a5a0b;}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
