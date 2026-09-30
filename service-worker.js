@@ -2,7 +2,7 @@
    Strategi: cache "cangkang" aplikasi (HTML/manifest/ikon).
    Data belanja TIDAK di-cache — selalu diambil baru dari API. */
 
-var CACHE = 'belanja-rumah-v1';
+var CACHE = 'belanja-rumah-v4';
 var ASET = [
   './',
   './index.html',
