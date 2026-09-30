@@ -1,0 +1,17 @@
+{
+  "id": "/belanja-keluarga",
+  "name": "Belanja Keluarga",
+  "short_name": "Belanja Kel.",
+  "description": "Daftar belanja rumah untuk Bapak dan Ibu",
+  "start_url": "/?mode=keluarga&k=161010",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#EFEBE1",
+  "theme_color": "#3FB98A",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
