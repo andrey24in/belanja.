@@ -50,7 +50,7 @@ body{background:#EFEBE1;min-height:100vh;min-height:100dvh;overflow-x:hidden;}
   display:flex;align-items:center;justify-content:center;color:var(--txt3);font-size:20px;}
 .pic img{width:100%;height:100%;object-fit:cover;border-radius:12px;}
 .pic.ada{transition:width .25s ease,height .25s ease;cursor:zoom-in;}
-.pic.besar{width:96px;height:96px;cursor:default;}
+.pic.besar{width:144px;height:144px;cursor:zoom-out;}
 .pic.besar .check{display:none;}
 .px{display:none;position:absolute;top:-8px;right:-8px;width:26px;height:26px;border-radius:50%;border:2px solid #fff;
   background:rgba(34,37,31,.85);color:#fff;font-size:13px;line-height:22px;text-align:center;padding:0;}
@@ -298,10 +298,14 @@ function htmlPic(foto, extra){
     +(extra||'')+'<button class="px" aria-label="Kecilkan">✕</button></div>';
 }
 /* ketuk foto = membesar 2x; ✕ di sudut kanan = kembali kecil. Mengembalikan true bila klik sudah ditangani. */
+/* Hanya 1 foto boleh besar (3x). Menutup: ✕, ketuk foto itu lagi, atau ketuk foto produk lain. */
 function klikFoto(e){
-  var x = e.target.closest('.px'); if (x){ x.parentNode.classList.remove('besar'); e.stopPropagation(); return true; }
-  var p = e.target.closest('.pic.ada'); if (p){ p.classList.add('besar'); e.stopPropagation(); return true; }
-  return false;
+  var p = e.target.closest('.pic.ada'); if (!p) return false;
+  e.stopPropagation();
+  var buka = document.querySelector('.pic.besar');
+  if (buka){ buka.classList.remove('besar'); return true; }   // ada yang besar -> tutup saja
+  p.classList.add('besar');
+  return true;
 }
 function masterById(id){ for(var i=0;i<DB.master.length;i++) if(DB.master[i].id===id) return DB.master[i]; return null; }
 function htmlKartu(m){
