@@ -267,7 +267,8 @@ function pilihNama(){
 }
 function renderART(){
   $('app').onclick = null;
-  if (!kategoriAktif || !DB.kategori.some(function(k){return k.nama===kategoriAktif;})) kategoriAktif = DB.kategori.length ? DB.kategori[0].nama : '';
+  var tabs = daftarTab();
+  if (tabs.indexOf(kategoriAktif) === -1) kategoriAktif = tabs[0] || '';
   $('app').innerHTML =
     '<div class="head"><div><div class="hello">'+sapaan()+', '+esc(namaSaya)+'</div><div class="title">Belanja rumah</div></div></div>'
     +'<div class="chips" id="chips"></div><div class="body" id="daftar"></div>'
@@ -287,8 +288,8 @@ function renderART(){
   renderChips(); renderBarang(true); renderFloat();
 }
 function renderChips(){
-  $('chips').innerHTML = DB.kategori.map(function(k){
-    return '<div class="chip'+(k.nama===kategoriAktif?' on':'')+'" data-k="'+esc(k.nama)+'">'+esc(k.nama)+'</div>'; }).join('');
+  $('chips').innerHTML = daftarTab().map(function(nama){
+    return '<div class="chip'+(nama===kategoriAktif?' on':'')+'" data-k="'+esc(nama)+'">'+esc(nama)+'</div>'; }).join('');
 }
 function tandaiChip(){ var cs=$('chips').children; for(var i=0;i<cs.length;i++) cs[i].classList.toggle('on', cs[i].getAttribute('data-k')===kategoriAktif); }
 function fotoUrl(f){ if(!f) return ''; return /^https?:\/\//i.test(f) ? f : 'foto/'+encodeURIComponent(String(f).trim()); }
@@ -309,6 +310,14 @@ function klikFoto(e){
 }
 /* bandingkan kategori tanpa peduli spasi berlebih / huruf besar-kecil */
 function normK(t){ return String(t||'').replace(/\s+/g,' ').trim().toLowerCase(); }
+/* Tab = kategori di sheet Kategori; + "Lain-lain" bila ada barang yang kategorinya tidak cocok */
+var LAIN = 'Lain-lain';
+function kategoriDikenal(){ var o={}; DB.kategori.forEach(function(k){ o[normK(k.nama)]=1; }); return o; }
+function daftarTab(){
+  var tabs = DB.kategori.map(function(k){ return k.nama; }), dikenal = kategoriDikenal();
+  if (!dikenal[normK(LAIN)] && DB.master.some(function(m){ return !dikenal[normK(m.kategori)]; })) tabs.push(LAIN);
+  return tabs;
+}
 function masterById(id){ for(var i=0;i<DB.master.length;i++) if(DB.master[i].id===id) return DB.master[i]; return null; }
 function htmlKartu(m){
   var k = keranjang[m.id], q = k ? k.jumlah : 0;
@@ -321,8 +330,11 @@ function htmlKartu(m){
       : '<button class="add" data-a="plus">+</button>')+'</div></div>';
 }
 function renderBarang(animasi){
-  var k0 = normK(kategoriAktif);
-  var list = DB.master.filter(function(m){ return normK(m.kategori)===k0; });
+  var k0 = normK(kategoriAktif), dikenal = kategoriDikenal();
+  var list = DB.master.filter(function(m){
+    var km = normK(m.kategori);
+    if (k0 === normK(LAIN)) return km === k0 || !dikenal[km];   // tab Lain-lain: juga barang yang kategorinya tidak cocok
+    return km === k0; });
   var h = list.length ? list.map(htmlKartu).join('') : '<div class="kosong">Belum ada barang di kategori ini.</div>';
   h += '<div class="tulis" data-j="rumah">Barang tidak ada di sini? Tulis sendiri.</div>'
      + '<div class="tulis" data-j="pribadi" style="color:#4b3f9c">＋ Keperluan pribadi</div>';
