@@ -108,6 +108,56 @@ button:active,.chip:active,.cta:active,.btn2:active,.wa:active{transform:scale(.
 .spin{width:32px;height:32px;border:3px solid rgba(63,185,138,.2);border-top-color:var(--mint);border-radius:50%;margin:0 auto 12px;animation:sp 1s linear infinite;}
 @keyframes sp{to{transform:rotate(360deg);}}
 .kosong{text-align:center;padding:40px 20px;color:var(--txt3);font-size:14px;}
+
+/* ============ TEMA KACA TERANG (elegan) ============
+   Blur asli dipakai lagi, tapi aman: daftar tidak lagi digambar ulang penuh
+   dan tidak ada animasi per kartu — jadi tetap ringan. */
+:root{--glass:rgba(255,255,255,.46);--glass-on:rgba(222,248,237,.62);--edge:rgba(255,255,255,.85);
+  --shadow:0 1px 0 rgba(255,255,255,.9) inset,0 10px 30px -12px rgba(40,60,50,.18),0 2px 6px rgba(40,60,50,.05);}
+body{background:#F3F0E8;}
+.bg{background:
+  radial-gradient(60% 45% at 12% 6%,rgba(158,235,207,.75) 0,transparent 70%),
+  radial-gradient(55% 40% at 95% 22%,rgba(214,236,190,.7) 0,transparent 70%),
+  radial-gradient(60% 45% at 85% 96%,rgba(170,226,206,.6) 0,transparent 70%),
+  radial-gradient(55% 40% at 4% 82%,rgba(240,221,192,.75) 0,transparent 70%),
+  linear-gradient(180deg,#F6F4EE 0%,#EFEBE1 100%);}
+.head{padding:26px 22px 8px;}
+.hello{font-size:11px;letter-spacing:1.6px;color:#5f8a78;font-weight:600;}
+.title{font-size:28px;font-weight:700;letter-spacing:-.8px;margin-top:4px;color:#1d211c;}
+.card,.chip,.rf,.scard,.btn2,.kotak,.add,.stp{
+  -webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);}
+.card{background:var(--glass);border:1px solid var(--edge);border-radius:20px;padding:13px 14px;margin-bottom:11px;box-shadow:var(--shadow);contain:none;}
+.card.on{background:var(--glass-on);border-color:rgba(255,255,255,.95);
+  box-shadow:0 1px 0 rgba(255,255,255,.9) inset,0 12px 30px -12px rgba(63,185,138,.45),0 0 0 1.5px rgba(63,185,138,.35);}
+.card.done{background:rgba(255,255,255,.3);}
+.chip{background:var(--glass);border:1px solid var(--edge);border-radius:16px;padding:10px 18px;box-shadow:var(--shadow);color:#5b6158;}
+.chip.on{background:linear-gradient(180deg,#B4F2DB,#8FE3C3);border-color:rgba(255,255,255,.9);color:#0B4A37;
+  box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 8px 20px -8px rgba(63,185,138,.6);}
+.pic{background:rgba(255,255,255,.85);border-radius:14px;box-shadow:0 2px 8px rgba(40,60,50,.08);}
+.pic img{border-radius:14px;}
+.nm{font-size:15.5px;}
+.add{background:rgba(255,255,255,.6);border:1px solid var(--edge);border-radius:14px;box-shadow:var(--shadow);}
+.stp{background:rgba(255,255,255,.55);border:1px solid var(--edge);border-radius:16px;}
+.stp button{background:rgba(255,255,255,.95);box-shadow:0 2px 6px rgba(40,60,50,.08);}
+.kotak{width:28px;height:28px;border-radius:9px;border:1.5px solid rgba(120,128,118,.45);background:rgba(255,255,255,.6);}
+.kotak.on{background:linear-gradient(180deg,#52C99A,#34A97C);border-color:transparent;box-shadow:0 4px 10px -2px rgba(63,185,138,.55);}
+.rf{background:var(--glass);border:1px solid var(--edge);border-radius:14px;box-shadow:var(--shadow);}
+.cta,.float{background:linear-gradient(180deg,#4FCB9C 0%,#2FA67A 100%);
+  box-shadow:0 1px 0 rgba(255,255,255,.35) inset,0 14px 28px -10px rgba(22,120,84,.55);}
+.cta{border-radius:20px;letter-spacing:.2px;}
+.float{border-radius:22px;}
+.btn2{background:var(--glass);border:1px solid var(--edge);box-shadow:var(--shadow);border-radius:18px;}
+.scard{background:var(--glass);border:1px solid var(--edge);box-shadow:var(--shadow);border-radius:18px;}
+.wa{background:rgba(222,248,237,.6);border:1px solid rgba(255,255,255,.9);border-radius:18px;box-shadow:var(--shadow);}
+.tulis{color:#2FA67A;font-weight:500;}
+.overlay{background:rgba(30,36,32,.28);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);}
+.sheet{background:rgba(249,247,242,.86);-webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+  border-top:1px solid rgba(255,255,255,.9);border-radius:26px 26px 0 0;box-shadow:0 -10px 40px rgba(30,40,35,.15);}
+.fld input,.fld textarea{background:rgba(255,255,255,.85);border:1px solid rgba(200,196,186,.6);border-radius:14px;}
+/* tombol utama & tombol keranjang = gaya chip aktif (Bahan Pokok, dll) */
+.cta,.float{background:linear-gradient(180deg,#B4F2DB,#8FE3C3);color:#0B4A37;border:1px solid rgba(255,255,255,.9);
+  box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 10px 24px -10px rgba(63,185,138,.65);}
+.cta .spin{border-color:rgba(11,74,55,.25)!important;border-top-color:#0B4A37!important;}
 </style>
 </head>
 <body>
@@ -221,7 +271,7 @@ function renderART(){
   $('app').innerHTML =
     '<div class="head"><div><div class="hello">'+sapaan()+', '+esc(namaSaya)+'</div><div class="title">Belanja rumah</div></div></div>'
     +'<div class="chips" id="chips"></div><div class="body" id="daftar"></div>'
-    +'<div class="float" id="float"><span>🛒 <span id="cnt">0</span> barang</span><span>Periksa →</span></div>';
+    +'<div class="float" id="float"><span><span id="cnt">0</span> barang</span><span>Periksa →</span></div>';
   $('float').onclick = periksa;
   $('chips').onclick = function(e){ var c=e.target.closest('.chip'); if(!c) return;
     kategoriAktif = c.getAttribute('data-k'); tandaiChip(); renderBarang(true); window.scrollTo(0,0); };
@@ -267,7 +317,7 @@ function htmlKartu(m){
 function renderBarang(animasi){
   var list = DB.master.filter(function(m){ return m.kategori===kategoriAktif; });
   var h = list.length ? list.map(htmlKartu).join('') : '<div class="kosong">Belum ada barang di kategori ini.</div>';
-  h += '<div class="tulis" data-j="rumah">✎ Barang tidak ada di sini? Tulis sendiri</div>'
+  h += '<div class="tulis" data-j="rumah">Barang tidak ada di sini? Tulis sendiri.</div>'
      + '<div class="tulis" data-j="pribadi" style="color:#4b3f9c">＋ Keperluan pribadi</div>';
   var w = $('daftar'); w.innerHTML = h;
   if (animasi){ w.classList.remove('masuk'); void w.offsetWidth; w.classList.add('masuk'); }
@@ -308,7 +358,7 @@ function periksa(){
       +(k.baru?' <span class="pill pill-new">baru</span>':'')+(k.jenis==='pribadi'?' <span class="pill pill-p">pribadi</span>':'')+'</div>'
       +(k.catatan?'<div class="note">✎ '+esc(k.catatan)+'</div>':'')+'</div>'
       +'<div class="act"><button class="ib no" data-hapus="'+esc(id)+'">🗑</button></div></div>'; });
-  h += '<div class="cta" id="btnKirim">📩 Minta dibelikan</div><div class="btn2" style="margin:0 6px" id="btnBalik">← Kembali</div></div>';
+  h += '<div class="cta" id="btnKirim">Kirim →</div><div class="btn2" style="margin:0 6px" id="btnBalik">← Kembali</div></div>';
   $('app').innerHTML = h;
   $('app').onclick = function(e){ var b=e.target.closest('[data-hapus]'); if(!b) return;
     delete keranjang[b.getAttribute('data-hapus')]; if(Object.keys(keranjang).length) periksa(); else renderART(); };
@@ -325,7 +375,7 @@ function kirim(){
 function selesaiART(){
   $('app').onclick = null;
   $('app').innerHTML = '<div class="kosong masuk" style="padding-top:90px"><div style="font-size:56px;color:var(--mint)">✓</div>'
-    +'<div style="font-size:18px;color:var(--mint-d);font-weight:600;margin-top:10px">Sudah terkirim ke Bapak</div>'
+    +'<div style="font-size:18px;color:var(--mint-d);font-weight:600;margin-top:10px">Udah diterima Vili</div>'
     +'<div class="cta" style="max-width:220px;margin:24px auto 0" id="btnAwal">Kembali ke awal</div></div>';
   $('btnAwal').onclick = renderART;
 }
@@ -356,7 +406,7 @@ function gambarTab(animasi){
       +'<div class="sub">'+esc(b.pemesan)+(b.catatan?' · '+esc(b.catatan):'')+(tmp?' · menyimpan…':'')+'</div></div></div>';
   });
   h += '<div class="tulis" data-aksi="tambah">＋ Tambah barang</div>';
-  if (list.length) h += '<div class="cta" data-aksi="selesai">🏁 Selesai belanja</div>';
+  if (list.length) h += '<div class="cta" data-aksi="selesai">Selesai belanja</div>';
   $('app').innerHTML = h + '</div>';
 }
 
@@ -416,9 +466,11 @@ function layarSelesai(){
   ov.querySelector('#sOk').onclick = function(){ kosongkan(); tutup(); };
 }
 function pesanWA(tujuan, list){
-  var t = 'Halo '+tujuan+', barang ini tidak dapat di toko:\n';
-  list.forEach(function(b,i){ t += (i+1)+'. '+b.nama+' — '+b.jumlah+' '+(b.satuan||'')+(b.jenis==='pribadi'?' (titipan pribadi)':'')+'\n'; });
-  return t + 'Terima kasih 🙏';
+  /* WhatsApp: teks miring = diapit _ … _ (harus per baris) */
+  var baris = [tujuan+', ini list yang belum kebeli:'];
+  list.forEach(function(b,i){ baris.push((i+1)+'. '+b.nama+' — '+b.jumlah+' '+(b.satuan||'')+(b.jenis==='pribadi'?' (titipan pribadi)':'')); });
+  baris.push('coba cek di Oki atau Pak Dhe');
+  return baris.map(function(x){ return '_'+x.trim()+'_'; }).join('\n');
 }
 function tambahKel(){
   modal('Tambah barang', [{key:'nama',label:'Nama barang',val:''},{key:'jumlah',label:'Jumlah',val:'1',num:true},
