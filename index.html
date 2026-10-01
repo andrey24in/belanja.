@@ -375,14 +375,25 @@ function layarSelesai(){
         +'<div style="font-size:22px">🟢</div><div style="flex:1"><div style="font-weight:600">Kirim ke '+esc(t.nama)+'</div><div style="font-size:11px">'+t.n+' barang</div></div><div>›</div></a>';
     });
   } else h += '<div class="kosong" style="padding:10px">Semua barang sudah dibeli 👍</div>';
-  h += '<div style="display:flex;gap:10px;margin-top:10px"><div class="btn2" style="flex:1" id="sBatal">Batal</div>'
-    +'<div class="cta" style="flex:1;margin:0" id="sOk">Kosongkan daftar</div></div></div>';
+  h += '<div style="display:flex;gap:10px;margin-top:10px" id="sTombol"><div class="btn2" style="flex:1" id="sBatal">Batal</div>'
+    +'<div class="cta" style="flex:1;margin:0" id="sOk">Selesai &amp; kosongkan</div></div></div>';
   var ov = document.createElement('div'); ov.className='overlay'; ov.innerHTML=h; document.body.appendChild(ov);
+  var sudahKosong = false;
   function tutup(){ if (ov.parentNode) document.body.removeChild(ov); }
-  ov.onclick = function(e){ if (e.target===ov) tutup(); };
+  /* Kosongkan daftar sekali saja: dipicu oleh tombol WA pertama ATAU tombol Selesai */
+  function kosongkan(){
+    if (sudahKosong) return; sudahKosong = true;
+    DB.belanja = []; gambarTab(true); simpanCache(); tulis({action:'selesaikan'});
+    ov.querySelector('#sTombol').innerHTML = '<div class="cta" style="flex:1;margin:0" id="sTutup">Tutup</div>';
+    ov.querySelector('#sTutup').onclick = tutup;
+    toast('Daftar dikosongkan & tersimpan ke riwayat');
+  }
+  ov.onclick = function(e){
+    if (e.target.closest('.wa')) { kosongkan(); return; }      // link WA tetap terbuka seperti biasa
+    if (e.target===ov && !sudahKosong) tutup();
+  };
   ov.querySelector('#sBatal').onclick = tutup;
-  ov.querySelector('#sOk').onclick = function(){
-    tutup(); DB.belanja = []; gambarTab(true); simpanCache(); toast('Tersimpan ke riwayat'); tulis({action:'selesaikan'}); };
+  ov.querySelector('#sOk').onclick = function(){ kosongkan(); tutup(); };
 }
 function pesanWA(tujuan, list){
   var t = 'Halo '+tujuan+', barang ini tidak dapat di toko:\n';
